@@ -1,6 +1,13 @@
 import { login, signup } from './actions'
 
-export default function LoginPage() {
+export default async function LoginPage({
+    searchParams,
+}: {
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}) {
+    const params = await searchParams
+    const errorMessage = params.error as string
+
     return (
         <div className="flex h-screen items-center justify-center bg-gray-50 dark:bg-gray-950 p-4">
             <div className="w-full max-w-sm space-y-8 rounded-2xl bg-white dark:bg-gray-900 p-8 shadow-xl border border-gray-100 dark:border-gray-800">
@@ -13,7 +20,12 @@ export default function LoginPage() {
                     </p>
                 </div>
 
-                <form className="space-y-6">
+                <form className="space-y-6" method="POST">
+                    {errorMessage && (
+                        <div className="p-3 text-sm text-red-500 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-center">
+                            {errorMessage}
+                        </div>
+                    )}
                     <div className="space-y-2">
                         <label htmlFor="email" className="text-sm font-medium text-gray-700 dark:text-gray-200">
                             Email
